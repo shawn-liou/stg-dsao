@@ -27,11 +27,11 @@ spec:
         volumeMounts:
         - mountPath: /sys
           name: sys
-        - mountPath: /var/run/crio/crio.sock
+        - mountPath: /var/lib/crio/crio.sock
           name: crio
           subPath: crio.sock
           readOnly: true
-        - mountPath: /var/run/crio/version
+        - mountPath: /var/lib/crio/version
           name: crio
           subPath: version
           readOnly: true
