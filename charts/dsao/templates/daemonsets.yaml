@@ -27,12 +27,13 @@ spec:
         volumeMounts:
         - mountPath: /sys
           name: sys
-        - mountPath: /var/lib/crio/crio.sock
-          name: criosock
+        - mountPath: /var/run/crio/crio.sock
+          name: crio
           subPath: crio.sock
           readOnly: true
-        - mountPath: /var/lib/crio/version
-          name: crioversion
+        - mountPath: /var/run/crio/version
+          name: crio
+          subPath: version
           readOnly: true
         - mountPath: /host/etc/os-release
           name: osrelease
@@ -45,8 +46,8 @@ spec:
               - -c
               - |
                 exec > /var/log/poststart.log 2>&1
-                mkdir /var/run/crio
-                ln -s /var/lib/crio/crio.sock /var/run/crio/crio.sock
+                mkdir -v /var/run/crio
+                ln -v -s /var/lib/crio/crio.sock /var/run/crio/crio.sock
                 sleep 30s
                 /opt/ds_agent/dsa_control -t 15 -r
                 {{ if .Values.dsmProxy }}
@@ -95,12 +96,9 @@ spec:
       - name: sys
         hostPath:
           path: /sys
-      - name: criosock
+      - name: crio
         hostPath:
           path: /var/run/crio
-      - name: crioversion
-        hostPath:
-          path: /var/lib/crio/version
       - name: osrelease
         hostPath:
           path: /etc/os-release
